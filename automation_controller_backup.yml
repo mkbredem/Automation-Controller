@@ -1,0 +1,14 @@
+---
+- name: backup controller to dropbox
+  hosts: Name_ansible_ssa_demo_tower
+
+  tasks:
+    - name: Change the working directory to somedir/ before executing the command
+      ansible.builtin.shell: ./setup.sh -b
+      args:
+        chdir: ansible-automation-platform-setup-2.1.1-1/
+      register: setup_backup_out
+
+    - name: 
+      debug:
+        var: setup_backup_out 
