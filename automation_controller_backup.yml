@@ -12,3 +12,9 @@
     - name: 
       debug:
         var: setup_backup_out 
+
+
+    - name: Change the working directory to somedir/ before executing the command
+      ansible.builtin.shell: ls -l
+      args:
+        chdir: ansible-automation-platform-setup-2.1.1-1/
