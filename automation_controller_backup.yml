@@ -13,7 +13,6 @@
       debug:
         var: setup_backup_out 
 
-
     - name: Change the working directory to somedir/ before executing the command
       ansible.builtin.shell: ls -l
       args:
@@ -23,7 +22,7 @@
       ansible.builtin.shell: >
         curl -X POST https://content.dropboxapi.com/2/files/upload 
         --header "Authorization: Bearer {{ access_token }}" 
-        --header "Dropbox-API-Arg: {\"path\": \"/Apps/Automation_Controller/ac_backup{{ ansible_date_time.date }}.tar.gz\"}" 
+        --header "Dropbox-API-Arg: {\"path\": \"ac_backup{{ ansible_date_time.date }}.tar.gz\"}" 
         --header "Content-Type: application/octet-stream" 
         --data-binary @automation-platform-backup-latest.tar.gz
       args:
