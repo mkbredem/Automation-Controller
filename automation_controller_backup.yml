@@ -18,3 +18,13 @@
       ansible.builtin.shell: ls -l
       args:
         chdir: ansible-automation-platform-setup-2.1.1-1/
+
+    - name: backup db to dropbox
+      ansible.builtin.shell: >
+        curl -X POST https://content.dropboxapi.com/2/files/upload 
+        --header "Authorization: Bearer {{ access_token }}" 
+        --header "Dropbox-API-Arg: {\"path\": \"/Apps/Automation_Controller/ac_backup{{ ansible_date_time.date }}.tar.gz\"}" 
+        --header "Content-Type: application/octet-stream" 
+        --data-binary @automation-platform-backup-latest.tar.gz
+      args:
+        chdir: ansible-automation-platform-setup-2.1.1-1/
