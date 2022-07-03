@@ -1,30 +1,32 @@
 ---
 - name: backup controller to dropbox
   hosts: Name_ansible_ssa_demo_tower
+  vars:
+    install_dir: ansible-automation-platform-setup-2.1.1-1/
 
   tasks:
-    - name: Change the working directory to somedir/ before executing the command
+    - name: Take a backup of Automation Controller postgressql db
       ansible.builtin.shell: ./setup.sh -b
       args:
-        chdir: ansible-automation-platform-setup-2.1.1-1/
+        chdir: "{{ install_dir }}"
       register: setup_backup_out
 
-    - name: 
-      debug:
-        var: setup_backup_out 
-
-    - name: Change the working directory to somedir/ before executing the command
+    - name: Document output for logging purposes
       ansible.builtin.shell: ls -l
       args:
         chdir: ansible-automation-platform-setup-2.1.1-1/
 
-    - name: backup db to dropbox
+    - name: backup backup to dropbox
       ansible.builtin.shell: >
-        curl -X POST https://content.dropboxapi.com/2/files/upload -u {{ lookup('env', 'DROPBOX_APP_KEY') }}:{{ lookup('env', 'DROPBOX_SECRET') }}
-#        --header "Authorization: Bearer {{ access_token }}" 
+        curl -X POST https://content.dropboxapi.com/2/files/upload
+        --header "Authorization: Bearer {{ access_token }}" 
         --header "Dropbox-API-Arg: {\"path\": \"/ac_backup{{ ansible_date_time.date }}.tar.gz\"}" 
         --header "Content-Type: application/octet-stream" 
         --data-binary @automation-platform-backup-latest.tar.gz
       args:
+<<<<<<< HEAD
         chdir: ansible-automation-platform-setup-2.1.1-1/
 
+=======
+        chdir: "{{ install_dir }}"
+>>>>>>> b3e832a07ab90874bcd8d1e4cee43c12855a081c
