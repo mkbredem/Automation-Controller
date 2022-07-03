@@ -19,7 +19,7 @@
     - name: get oquth token
       ansible.builtin.shell: >
         curl -X POST https://api.dropboxapi.com/2/check/app 
-        --header "Authorization: Basic {{ lookup('env', 'DROPBOX_APP_KEY') }}:{{ lookup('env', 'DROPBOX_SECRET') }}"
+        --header "Authorization: Basic <base64({{ lookup('env', 'DROPBOX_APP_KEY') }}:{{ lookup('env', 'DROPBOX_SECRET') }})>" 
         --header 'Content-Type: application/json' 
         --data '{}'
       register: r_oauth_request_output
