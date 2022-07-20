@@ -1,6 +1,6 @@
 ---
 - name: backup controller to dropbox
-  hosts: Name_ansible_ssa_demo_tower
+  hosts: Name_ansible_ssa_demo_controller
   vars:
     install_dir: ansible-automation-platform-setup-2.1.1-1/
 
