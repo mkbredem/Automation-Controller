@@ -16,17 +16,17 @@
       args:
         chdir: "{{ install_dir }}"
 
-    - name: get oquth token
-      ansible.builtin.shell: >
-        curl -X POST https://api.dropboxapi.com/2/check/app 
-        --header "Authorization: Basic <base64({{ lookup('env', 'DROPBOX_APP_KEY') }}:{{ lookup('env', 'DROPBOX_SECRET') }})>" 
-        --header 'Content-Type: application/json' 
-        --data '{}'
-      register: r_oauth_request_output
+#    - name: get oquth token
+#      ansible.builtin.shell: >
+#        curl -X POST https://api.dropboxapi.com/2/check/app 
+#        --header "Authorization: Basic <base64({{ lookup('env', 'DROPBOX_APP_KEY') }}:{{ lookup('env', 'DROPBOX_SECRET') }})>" 
+#        --header 'Content-Type: application/json' 
+#        --data '{}'
+#      register: r_oauth_request_output
 
-    - name: show r_oauth_request_output
-      debug:
-        var: r_oauth_request_output
+#    - name: show r_oauth_request_output
+#      debug:
+#        var: r_oauth_request_output
 
     - name: backup backup to dropbox
       ansible.builtin.shell: >
