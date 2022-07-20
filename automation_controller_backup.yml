@@ -5,11 +5,11 @@
     install_dir: /root/ansible-automation-platform-setup-2.1.1-1
 
   tasks:
-#    - name: Take a backup of Automation Controller postgressql db
-#      ansible.builtin.shell: ./setup.sh -b
-#      args:
-#        chdir: "{{ install_dir }}"
-#      register: setup_backup_out
+    - name: Take a backup of Automation Controller postgressql db
+      ansible.builtin.shell: ./setup.sh -b
+      args:
+        chdir: "{{ install_dir }}"
+      register: setup_backup_out
 
     - name: Document output for logging purposes
       ansible.builtin.shell: ls -l
