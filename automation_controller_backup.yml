@@ -1,42 +1,42 @@
 ---
 - name: backup controller to dropbox
-  hosts: Name_ansible_ssa_demo_tower
+  hosts: Name_ansible_ssa_demo_controller
   vars:
-    install_dir: ansible-automation-platform-setup-2.1.1-1/
+    install_dir: /root/ansible-automation-platform-setup-2.1.1-1
 
   tasks:
-#    - name: Take a backup of Automation Controller postgressql db
-#      ansible.builtin.shell: ./setup.sh -b
-#      args:
-#        chdir: "{{ install_dir }}"
-#      register: setup_backup_out
+    - name: Take a backup of Automation Controller postgressql db
+      ansible.builtin.shell: ./setup.sh -b
+      args:
+        chdir: "{{ install_dir }}"
+      register: setup_backup_out
 
     - name: Document output for logging purposes
       ansible.builtin.shell: ls -l
       args:
-        chdir: ansible-automation-platform-setup-2.1.1-1/
+        chdir: "{{ install_dir }}"
 
-    - name: get oquth token
-      ansible.builtin.shell: >
-        curl -X POST https://api.dropboxapi.com/2/check/app 
-        --header "Authorization: Basic <base64({{ lookup('env', 'DROPBOX_APP_KEY') }}:{{ lookup('env', 'DROPBOX_SECRET') }})>" 
-        --header 'Content-Type: application/json' 
-        --data '{}'
-      register: r_oauth_request_output
+#    - name: get oquth token
+#      ansible.builtin.shell: >
+#        curl -X POST https://api.dropboxapi.com/2/check/app 
+#        --header "Authorization: Basic <base64({{ lookup('env', 'DROPBOX_APP_KEY') }}:{{ lookup('env', 'DROPBOX_SECRET') }})>" 
+#        --header 'Content-Type: application/json' 
+#        --data '{}'
+#      register: r_oauth_request_output
 
-    - name: show r_oauth_request_output
-      debug:
-        var: r_oauth_request_output
+#    - name: show r_oauth_request_output
+#      debug:
+#        var: r_oauth_request_output
 
     - name: backup backup to dropbox
       ansible.builtin.shell: >
         curl -X POST https://content.dropboxapi.com/2/files/upload 
+        #--header "Authorization: Basic <base64({{ lookup('env', 'DROPBOX_APP_KEY') }}:{{ lookup('env', 'DROPBOX_SECRET') }})>" 
         --header "Authorization: Bearer {{ access_token }}"
         --header "Dropbox-API-Arg: {\"path\": \"/ac_backup{{ ansible_date_time.date }}.tar.gz\"}" 
         --header "Content-Type: application/octet-stream" 
         --data-binary @automation-platform-backup-latest.tar.gz
       args:
-        chdir: ansible-automation-platform-setup-2.1.1-1/
+        chdir: "{{ install_dir }}"
 
- #       --header "Authorization: Basic <base64({{ lookup('env', 'DROPBOX_APP_KEY') }}:{{ lookup('env', 'DROPBOX_SECRET') }})>" 
- 
+ #       --header "Authorization: Bearer {{ access_token }}" 
