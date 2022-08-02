@@ -31,11 +31,12 @@
     - name: backup backup to dropbox
       ansible.builtin.shell: >
         curl -X POST https://content.dropboxapi.com/2/files/upload 
-        --header "Authorization: Basic <base64({{ lookup('env', 'DROPBOX_APP_KEY') }}:{{ lookup('env', 'DROPBOX_SECRET') }})>" 
+        --header "Authorization: Bearer {{ access_token }}"
         --header "Dropbox-API-Arg: {\"path\": \"/ac_backup{{ ansible_date_time.date }}.tar.gz\"}" 
         --header "Content-Type: application/octet-stream" 
         --data-binary @automation-platform-backup-latest.tar.gz
       args:
         chdir: ansible-automation-platform-setup-2.1.1-1/
 
- #       --header "Authorization: Bearer {{ access_token }}" 
+ #       --header "Authorization: Basic <base64({{ lookup('env', 'DROPBOX_APP_KEY') }}:{{ lookup('env', 'DROPBOX_SECRET') }})>" 
+ 
