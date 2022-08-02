@@ -38,4 +38,14 @@
       args:
         chdir: "{{ install_dir }}"
 
+    - name: backup backup to dropbox
+      ansible.builtin.shell: pwd
+      args:
+        chdir: "{{ install_dir }}"
+
+    - name: backup backup to dropbox
+      ansible.builtin.shell: ls -l
+      args:
+        chdir: "{{ install_dir }}"
+
  #      --header "Authorization: Basic <base64({{ lookup('env', 'DROPBOX_APP_KEY') }}:{{ lookup('env', 'DROPBOX_SECRET') }})>" 
