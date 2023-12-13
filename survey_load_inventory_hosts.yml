@@ -1,6 +1,6 @@
 ---
 - name: create susrvey dropdown listbox for inventories associated with job templates
-  hosts: aap_demo_controller
+  hosts: all
   ignore_errors: true
   vars:
     jt_string: "{{ job_template_string }}"
