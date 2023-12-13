@@ -13,6 +13,6 @@
     - name: debug all organizations in a loop  # use query to return a list
       debug:
         msg: "Organization description={{ item['description'] }} id={{ item['id'] }}"
-      loop: "{{ query('ansible.controller.controller_api', 'organizations') }}"
+      loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
 #      loop_control:
 #        label: "{{ item['name'] }}"
