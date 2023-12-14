@@ -6,38 +6,10 @@
     jt_string: "{{ job_template_string }}"
 
   tasks:                                                                                 
-#   - name: Report the usernames of all users with admin privs
-#     debug:
-#       msg: "Admin users: {{ query('ansible.controller.controller_api', 'users', query_params={ 'is_superuser': true }) | map(attribute='username') | join(', ') }}"
-
-#   - name: Report the usernames of all users with admin privs
-#     debug:
-#       msg: "Admin users: {{ query('ansible.controller.controller_api', 'job_templates', query_params={ 'is_superuser': true }) | map(attribute='username') | join(', ') }}"
-
-    - name: show job templates in a loop 
-      debug:
-        msg: "Job Template={{ item['name'] }} id={{ item['id'] }} Inventory Name={{ item['summary_fields']['inventory']['name'] }} Inventory ID={{ item['summary_fields']['inventory']['name'] }}"
-      loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
-
-#    - name: instantiate inventories list
-#      set_fact:
-#        inventories: []
-
-
-#    - name: Find inventories with set_fact
-#      set_fact:
-#        inventories: >-
-#          {{
-#            inventories | default([])
-#            + [[
-#              item['description'],
-#              item['id'],
-#              item['summary_fields']['inventory']['name'],
-#              item['summary_fields']['inventory']['id']
-#            ]]
-#          }}
+#    - name: show job templates in a loop 
+#      debug:
+#        msg: "Job Template={{ item['name'] }} id={{ item['id'] }} Inventory Name={{ item['summary_fields']['inventory']['name'] }} Inventory ID={{ item['summary_fields']['inventory']['name'] }}"
 #      loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
-#      register: jobs_and_inventories
 
     - name: Find inventories with set_stats
       set_stats:
@@ -59,9 +31,33 @@
       debug:
         var: jobs_and_inventories
 
-#    - name: debug all organizations in a loop  # use query to return a list
-#      debug:
-#        msg: "Organization description={{ item['description'] }} id={{ item['id'] }}"
-#      loop: "{{ query('ansible.controller.controller_api', 'organizations') }}"
-#      loop_control:
-#        label: "{{ item['name'] }}"
+  #  - name: use jobs_and_inventories to get inventory hosts and groups
+
+    # example https://github.com/network-automation/toolkit/blob/master/playbooks/network_backup.yml
+    #- name: build hosts surveys in job templates
+    #  ansible.controller.job_template:
+    #    name: "Network Automation - Restore"
+    #    job_type: "run"
+    #    inventory: "{{ restore_inventory | default('Network Inventory') }}"
+    #    project: "{{ restore_project | default('Network Toolkit') }}"
+    #    playbook: "{{ restores_playbook | default('playbooks/network_restore.yml') }}"
+    #    credential: "{{ restore_credential | default('Network Credential') }}"
+    #    survey_enabled: true
+    #    survey_spec: "{{ lookup('template', '{{ playbook_dir }}/templates/backup.j2') }}"
+    #    validate_certs: false
+    #    execution_environment: "Default execution environment"
+    #  run_once: true
+
+#    - name: build hosts surveys in job templates
+#      ansible.controller.job_template:
+#        name: "Network Automation - Restore"
+#        job_type: "run"
+#        inventory: "{{ restore_inventory | default('Network Inventory') }}"
+#        project: "{{ restore_project | default('Network Toolkit') }}"
+#        playbook: "{{ restores_playbook | default('playbooks/network_restore.yml') }}"
+#        credential: "{{ restore_credential | default('Network Credential') }}"
+#        survey_enabled: true
+#        survey_spec: "{{ lookup('template', '{{ playbook_dir }}/templates/backup.j2') }}"
+#        validate_certs: false
+#        execution_environment: "Default execution environment"
+#      loop
