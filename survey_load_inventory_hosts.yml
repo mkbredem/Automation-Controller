@@ -6,13 +6,27 @@
     jt_string: "{{ job_template_string }}"
 
   tasks:                                                                                 
+#   - name: Report the usernames of all users with admin privs
+#     debug:
+#       msg: "Admin users: {{ query('ansible.controller.controller_api', 'users', query_params={ 'is_superuser': true }) | map(attribute='username') | join(', ') }}"
+
     - name: Report the usernames of all users with admin privs
       debug:
-        msg: "Admin users: {{ query('ansible.controller.controller_api', 'users', query_params={ 'is_superuser': true }) | map(attribute='username') | join(', ') }}"
+        msg: "Admin users: {{ query('ansible.controller.controller_api', 'job_templates', query_params={ 'is_superuser': true }) | map(attribute='username') | join(', ') }}"
 
-    - name: debug all organizations in a loop  # use query to return a list
+    - name: Find inventories  # use query to return a list
+      set_fact:
+        inventories: "[{{ item['description'] }}, {{ item['id'] }}, {{ item['summary_fields']['inventory'['name']] }}, {{ item['summary_fields']['inventory'['id']] }}"
+      loop: "{{ query('ansible.controller.controller_api', 'job_templates' | map(attribute=)) }}"
+      register: jobs_and_inventories
+
+    - name: Show inventories
       debug:
-        msg: "Organization description={{ item['description'] }} id={{ item['id'] }}"
-      loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
+        var: jobs_and_inventories
+        
+#    - name: debug all organizations in a loop  # use query to return a list
+#      debug:
+#        msg: "Organization description={{ item['description'] }} id={{ item['id'] }}"
+#      loop: "{{ query('ansible.controller.controller_api', 'organizations') }}"
 #      loop_control:
 #        label: "{{ item['name'] }}"
