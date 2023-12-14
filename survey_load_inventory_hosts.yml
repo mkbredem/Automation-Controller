@@ -4,7 +4,7 @@
   ignore_errors: true
   vars:
     jt_string: "{{ job_template_string }}"
-    
+
   tasks:                                                                                 
 #   - name: Report the usernames of all users with admin privs
 #     debug:
@@ -26,7 +26,7 @@
 
     - name: Find inventories  # use query to return a list
       set_fact:
-        inventories: "{{inventories + [{{ item['description'] }}, {{ item['id'] }}, {{ item['summary_fields']['inventory']['name'] }}, {{ item['summary_fields']['inventory']['id'] }}] }}"
+        inventories: {{inventories + [{{ item['description'] }}, {{ item['id'] }}, {{ item['summary_fields']['inventory']['name'] }}, {{ item['summary_fields']['inventory']['id'] }}] }}
       loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
       register: jobs_and_inventories
 
