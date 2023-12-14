@@ -17,13 +17,13 @@
     - name: Find inventories  # use query to return a list
       set_fact:
         inventories: "[{{ item['description'] }}, {{ item['id'] }}, {{ item['summary_fields']['inventory'['name']] }}, {{ item['summary_fields']['inventory'['id']] }}"
-      loop: "{{ query('ansible.controller.controller_api', 'job_templates' | map(attribute=)) }}"
+      loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
       register: jobs_and_inventories
 
     - name: Show inventories
       debug:
         var: jobs_and_inventories
-        
+
 #    - name: debug all organizations in a loop  # use query to return a list
 #      debug:
 #        msg: "Organization description={{ item['description'] }} id={{ item['id'] }}"
