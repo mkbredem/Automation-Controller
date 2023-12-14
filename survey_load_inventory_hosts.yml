@@ -14,7 +14,7 @@
     - name: Find inventories with set_stats
       set_stats:
         data:
-          inventories_test: {{ query('ansible.controller.controller_api', 'inventories') }}
+          inventories_test: "{{ query('ansible.controller.controller_api', 'inventories') }}"
 
     - name:
       debug:
