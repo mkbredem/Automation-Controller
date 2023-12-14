@@ -46,7 +46,7 @@
             {{
               inventories | default([])
               + [[
-                item['description'],
+                item['name'],
                 item['id'],
                 item['summary_fields']['inventory']['name'],
                 item['summary_fields']['inventory']['id']
