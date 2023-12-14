@@ -31,11 +31,12 @@
                 item['id'],
                 item['summary_fields']['inventory']['name'],
                 item['summary_fields']['inventory']['id']
-#                [[query('ansible.controller.controller_api', 'inventories', query_params={ 'is_superuser': true })]]
               ]]
             }}
       loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
       register: jobs_and_inventories
+
+#                [[query('ansible.controller.controller_api', 'inventories', query_params={ 'is_superuser': true })]]
 
     - name: Show inventories
       debug:
