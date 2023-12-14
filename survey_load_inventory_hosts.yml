@@ -19,16 +19,16 @@
         msg: "Job Template={{ item['name'] }} id={{ item['id'] }} Inventory Name={{ item['summary_fields']['inventory']['name'] }} Inventory ID={{ item['summary_fields']['inventory']['name'] }}"
       loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
 
-    - name: instantiate inventories list
+#    - name: instantiate inventories list
+#      set_fact:
+#        inventories: []
+
+
+    - name: Find inventories with set_fact
       set_fact:
-        inventories: []
-
-
-   - name: Find inventories with set_fact
-     set_fact:
-       inventories: "{{inventories + [ item['description'], item['id'], item['summary_fields']['inventory']['name'], item['summary_fields']['inventory']['id'] ] }}"
-     loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
-     register: jobs_and_inventories
+        inventories: "{{inventories | default([]) + [ item['description'], item['id'], item['summary_fields']['inventory']['name'], item['summary_fields']['inventory']['id'] ] }}"
+      loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
+      register: jobs_and_inventories
 
 #    - name: Find inventories with set_stats
 #      set_stats:
