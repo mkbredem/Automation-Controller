@@ -14,6 +14,15 @@
     - name: Find inventories with set_stats
       set_stats:
         data:
+          inventories_test: {{ query('ansible.controller.controller_api', 'inventories') }}
+
+    - name:
+      debug:
+        var: inventories_test
+
+    - name: Find inventories with set_stats
+      set_stats:
+        data:
           inventories: >-
             {{
               inventories | default([])
@@ -22,6 +31,7 @@
                 item['id'],
                 item['summary_fields']['inventory']['name'],
                 item['summary_fields']['inventory']['id']
+#                [[query('ansible.controller.controller_api', 'inventories', query_params={ 'is_superuser': true })]]
               ]]
             }}
       loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
