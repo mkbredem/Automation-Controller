@@ -16,7 +16,7 @@
 
     - name: show job templates in a loop  # use query to return a list
       debug:
-        msg: "Job Template={{ item['description'] }} id={{ item['id'] }} Inventory Name={{ item['summary_fields']['inventory']['name'] }}"
+        msg: "Job Template={{ item['name'] }} id={{ item['id'] }} Inventory Name={{ item['summary_fields']['inventory']['name'] }} Inventory ID={{ item['summary_fields']['inventory']['name']"
       loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
 
     - name: Find inventories  # use query to return a list
