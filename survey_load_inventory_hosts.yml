@@ -16,7 +16,7 @@
 
     - name: Find inventories  # use query to return a list
       set_fact:
-        inventories: "[{{ item['description'] }}, {{ item['id'] }}, {{ item['summary_fields']['inventory']['name']] }}, {{ item['summary_fields']['inventory'['id']] }}"
+        inventories: "[{{ item['description'] }}, {{ item['id'] }}, {{ item['summary_fields']['inventory']['name'] }}, {{ item['summary_fields']['inventory'['id']] }}"
       loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
       register: jobs_and_inventories
 
