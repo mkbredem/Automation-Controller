@@ -14,7 +14,6 @@
 #     debug:
 #       msg: "Admin users: {{ query('ansible.controller.controller_api', 'job_templates', query_params={ 'is_superuser': true }) | map(attribute='username') | join(', ') }}"
 
-
     - name: show job templates in a loop  # use query to return a list
       debug:
         msg: "Job Template={{ item['name'] }} id={{ item['id'] }} Inventory Name={{ item['summary_fields']['inventory']['name'] }} Inventory ID={{ item['summary_fields']['inventory']['name'] }}"
@@ -26,7 +25,7 @@
 
     - name: Find inventories  # use query to return a list
       set_fact:
-        inventories: {{inventories + [{{ item['description'] }}, {{ item['id'] }}, {{ item['summary_fields']['inventory']['name'] }}, {{ item['summary_fields']['inventory']['id'] }}] }}
+        inventories: "{{inventories + [ item['description'], item['id'], item['summary_fields']['inventory']['name'], item['summary_fields']['inventory']['id'] ] }}"
       loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
       register: jobs_and_inventories
 
