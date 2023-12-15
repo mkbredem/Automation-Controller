@@ -5,11 +5,7 @@
   vars:
     jt_string: "{{ job_template_string  | default('backup') }}"
 
-  tasks:
-    - name: Debug jt_string
-      debug:
-        var: jt_string
-      
+  tasks: 
     - name: Query job_templates
       set_fact:
         job_templates_result: "{{ query('ansible.controller.controller_api', 'job_templates', query_params={ 'name__iregex': '.*' + jt_string + '.*' }) }}"
@@ -31,7 +27,7 @@
               'hosts': query('ansible.controller.controller_api', 'hosts') | json_query('[?summary_fields.inventory.id == `' + item.summary_fields.inventory.id | string + '`].name') | default([])
             }]
           }}
-      loop: "{{ query('ansible.controller.controller_api', 'job_templates', query_params={ 'name__iregex': '.*backup.*' }) }}"
+      loop: "{{ query('ansible.controller.controller_api', 'job_templates', query_params={ 'name__iregex': '.' + jt_string + '.*' }) }}"
 
     - name: show inventories
       debug:
