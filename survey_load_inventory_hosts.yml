@@ -35,8 +35,10 @@
             }]
           }}
       loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
-      register: jobs_and_inventories
 
+    - name: show inventories
+      debug:
+        var: inventories
 
     - name: Get hosts with controller_api query and store in inventory_hosts
       set_fact:
