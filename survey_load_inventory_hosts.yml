@@ -12,13 +12,12 @@
 #      loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
 
     - name: Get job_templates and inventories with set_stats and controller_api query and store in inventories_test
-      set_stats:
-        data:
-          inventories_test: "{{ query('ansible.controller.controller_api', 'inventories') | default([])}}"
+      set_fact:
+        inventories_test: "{{ query('ansible.controller.controller_api', 'inventories') | default([])}}"
 
     - name: show inventories_test value
       debug:
-        var: ansible_stats.inventories_test
+        var: inventories_test
 
     - name: Find inventories with set_stats
       set_stats:
