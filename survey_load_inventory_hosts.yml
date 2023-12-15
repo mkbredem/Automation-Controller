@@ -3,23 +3,9 @@
   hosts: all
   ignore_errors: true
   vars:
-    jt_string: "{{ job_template_string }}"
+    jt_string: "{{ job_template_string }} | default('Backup')"
 
   tasks:                                                               
-#    - name: Find inventories with set_fact
-#      set_fact:
-#        inventories: >-
-#          {{
-#            inventories | default([]) +
-#            [{
-#              'name': item['name'],
-#              'id': item['id'],
-#              'inventory_name': item['summary_fields']['inventory']['name'],
-#              'inventory_id': item['summary_fields']['inventory']['id']
-#            }]
-#          }}
-#      loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
-
     - name: Find inventories with set_fact
       set_fact:
         inventories: >-
@@ -33,7 +19,7 @@
               'hosts': query('ansible.controller.controller_api', 'hosts') | json_query('[?summary_fields.inventory.id == `' + item.summary_fields.inventory.id | string + '`].name') | default([])
             }]
           }}
-      loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
+      loop: "{{ query('ansible.controller.controller_api', 'job_templates', query_params={ 'name__iregex': '.*' + jt_strings + '.*' }) }}"
 
     - name: show inventories
       debug:
