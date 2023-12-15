@@ -6,23 +6,21 @@
     jt_string: "{{ job_template_string }}"
 
   tasks:                                                               
-#    - name: Find inventories with set_stats
-#      set_stats:
-#        data:
-#          inventories: >-
-#            {{
-#              inventories | default([])
-#              + [[
-#                item['name'],
-#                item['id'],
-#                item['summary_fields']['inventory']['name'],
-#                item['summary_fields']['inventory']['id']
-#              ]]
-#            }}
+#    - name: Find inventories with set_fact
+#      set_fact:
+#        inventories: >-
+#          {{
+#            inventories | default([]) +
+#            [{
+#              'name': item['name'],
+#              'id': item['id'],
+#              'inventory_name': item['summary_fields']['inventory']['name'],
+#              'inventory_id': item['summary_fields']['inventory']['id']
+#            }]
+#          }}
 #      loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
-#      register: jobs_and_inventories
 
-    - name: Find inventories with set_stats
+    - name: Find inventories with set_fact
       set_fact:
         inventories: >-
           {{
@@ -31,7 +29,8 @@
               'name': item['name'],
               'id': item['id'],
               'inventory_name': item['summary_fields']['inventory']['name'],
-              'inventory_id': item['summary_fields']['inventory']['id']
+              'inventory_id': item['summary_fields']['inventory']['id'],
+              'hosts': query('ansible.controller.controller_api', 'hosts') | json_query('[?summary_fields.inventory.id == `' + item.summary_fields.inventory.id + ']') | default([])
             }]
           }}
       loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
@@ -42,7 +41,7 @@
 
     - name: Get hosts with controller_api query and store in inventory_hosts
       set_fact:
-        inventory_hosts: "{{ query('ansible.controller.controller_api', 'hosts') | json_query('[?summary_fields.inventory.id == `3`]') | default([])}}"
+        inventory_hosts: "{{ query('ansible.controller.controller_api', 'hosts') | json_query('[?summary_fields.inventory.id == `3`].name') | default([])}}"
     # instead of hardcoding 3, the idea is to loop through jobs_and_inventories and filter by each inventory ID and append that list in the jobs_and_inventories dictionary/list which will later be used to build the survey within each job template. 
     # note: you will likely want to filter job templates so that a survey is not added to every job_template.
 
