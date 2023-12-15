@@ -12,7 +12,7 @@
           {{
             inventories | default([]) +
             [{
-              'name': item['name'],
+              'job_template_name': item['name'],
               'id': item['id'],
               'inventory_name': item['summary_fields']['inventory']['name'],
               'inventory_id': item['summary_fields']['inventory']['id'],
