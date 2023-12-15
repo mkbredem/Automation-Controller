@@ -11,12 +11,12 @@
 #        msg: "Job Template={{ item['name'] }} id={{ item['id'] }} Inventory Name={{ item['summary_fields']['inventory']['name'] }} Inventory ID={{ item['summary_fields']['inventory']['name'] }}"
 #      loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
 
-    - name: Find inventories with set_stats
+    - name: Get inventories with set_stats and controller_api query
       set_stats:
         data:
           inventories_test: "{{ query('ansible.controller.controller_api', 'inventories') | default([])}}"
 
-    - name:
+    - name: show inventories_test value
       debug:
         var: inventories_test
 
