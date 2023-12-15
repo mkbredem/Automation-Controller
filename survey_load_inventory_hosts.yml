@@ -16,12 +16,13 @@
         var: query('ansible.controller.controller_api', 'hosts')
     
     - name: Get hosts with controller_api query and store in inventories_test
-      set_fact:
-        inventories_test: "{{ query('ansible.controller.controller_api', 'hosts', query_params={ 'results.summary_fields.inventory.id': 3 }) | default([])}}"
+      set_stats:
+        data:
+          inventory_hosts: "{{ query('ansible.controller.controller_api', 'hosts', query_params={ 'summary_fields.inventory.id': 3 }) | default([])}}"
 
-    - name: show inventories_test value
+    - name: show inventory_hosts value
       debug:
-        var: inventories_test
+        var: inventory_hosts
 
     - name: Find inventories with set_stats
       set_stats:
