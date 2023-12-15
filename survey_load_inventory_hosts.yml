@@ -30,7 +30,7 @@
     
     - name: Show inventories
       debug:
-        var: jobs_and_inventories
+        var: ansible_facts.jobs_and_inventories
 
   #  - name: use jobs_and_inventories to get inventory hosts and groups
 
