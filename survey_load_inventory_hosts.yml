@@ -11,13 +11,17 @@
 #        msg: "Job Template={{ item['name'] }} id={{ item['id'] }} Inventory Name={{ item['summary_fields']['inventory']['name'] }} Inventory ID={{ item['summary_fields']['inventory']['name'] }}"
 #      loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
 
-    - name: Debug API data
-      debug:
-        var: query('ansible.controller.controller_api', 'hosts')
-    
+#    - name: Debug API data
+#      debug:
+#        var: query('ansible.controller.controller_api', 'hosts')
+
     - name: Get hosts with controller_api query and store in inventories_test
       set_fact:
-        inventory_hosts: "{{ query('ansible.controller.controller_api', 'hosts', query_params={ 'summary_fields.inventory.id': 3 }) | default([])}}"
+        inventories_test: "{{ query('ansible.controller.controller_api', 'hosts') | json_query('[?inventory.id==`4`]') | default([])}}"
+#
+#      - name: Get hosts with controller_api query and store in inventories_test
+#        set_fact:
+#          inventory_hosts: "{{ query('ansible.controller.controller_api', 'hosts', query_params={ 'summary_fields.inventory.id': 3 }) | default([])}}"
 
     - name: show inventory_hosts value
       debug:
