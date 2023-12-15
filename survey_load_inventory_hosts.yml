@@ -6,14 +6,6 @@
     jt_string: "{{ job_template_string  | default('backup') }}"
 
   tasks: 
-    - name: Query job_templates
-      set_fact:
-        job_templates_result: "{{ query('ansible.controller.controller_api', 'job_templates', query_params={ 'name__iregex': '.*' + jt_string + '.*' }) }}"
-        
-    - name: Debug job_templates_result
-      debug:
-        var: job_templates_result
-
     - name: Find inventories with set_fact
       set_fact:
         inventories: >-
