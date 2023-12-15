@@ -3,7 +3,7 @@
   hosts: all
   ignore_errors: true
   vars:
-    jt_string: "{{ job_template_string }} | default('backup')"
+    jt_string: "{{ job_template_string  | default('backup') }}"
 
   tasks:
     - name: Debug jt_string
