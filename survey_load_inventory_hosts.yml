@@ -30,7 +30,7 @@
               'id': item['id'],
               'inventory_name': item['summary_fields']['inventory']['name'],
               'inventory_id': item['summary_fields']['inventory']['id'],
-              'hosts': query('ansible.controller.controller_api', 'hosts') | json_query('[?summary_fields.inventory.id == `' + item.summary_fields.inventory.id | string + '`]') | default([])
+              'hosts': query('ansible.controller.controller_api', 'hosts') | json_query('[?summary_fields.inventory.id == `' + item.summary_fields.inventory.id | string + '`].name') | default([])
             }]
           }}
       loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
