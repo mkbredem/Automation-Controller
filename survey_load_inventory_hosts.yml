@@ -5,28 +5,7 @@
   vars:
     jt_string: "{{ job_template_string }}"
 
-  tasks:                                                                                 
-#    - name: show job templates in a loop 
-#      debug:
-#        msg: "Job Template={{ item['name'] }} id={{ item['id'] }} Inventory Name={{ item['summary_fields']['inventory']['name'] }} Inventory ID={{ item['summary_fields']['inventory']['name'] }}"
-#      loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
-
-#    - name: Debug API data
-#      debug:
-#        var: query('ansible.controller.controller_api', 'hosts')
-
-    - name: Get hosts with controller_api query and store in inventories_test
-      set_fact:
-        inventories_test: "{{ query('ansible.controller.controller_api', 'hosts') | json_query('[?summary_fields.inventory.id == `3`]') | default([])}}"
-#
-#      - name: Get hosts with controller_api query and store in inventories_test
-#        set_fact:
-#          inventory_hosts: "{{ query('ansible.controller.controller_api', 'hosts', query_params={ 'summary_fields.inventory.id': 3 }) | default([])}}"
-
-    - name: show inventory_hosts value
-      debug:
-        var: inventory_hosts
-
+  tasks:                                                               
     - name: Find inventories with set_stats
       set_stats:
         data:
@@ -43,8 +22,12 @@
       loop: "{{ query('ansible.controller.controller_api', 'job_templates') }}"
       register: jobs_and_inventories
 
-#                [[query('ansible.controller.controller_api', 'inventories', query_params={ 'is_superuser': true })]]
-
+    - name: Get hosts with controller_api query and store in inventories_test
+      set_fact:
+        inventory_hosts: "{{ query('ansible.controller.controller_api', 'hosts') | json_query('[?summary_fields.inventory.id == `3`]') | default([])}}"
+    # instead of hardcoding 3, the idea is to loop through jobs_and_inventories and filter by each inventory ID and append that list in the jobs_and_inventories dictionary/list which will later be used to build the survey within each job template. 
+    # note: you will likely want to filter job templates so that a survey is not added to every job_template.
+    
     - name: Show inventories
       debug:
         var: jobs_and_inventories
@@ -65,17 +48,3 @@
     #    validate_certs: false
     #    execution_environment: "Default execution environment"
     #  run_once: true
-
-#    - name: build hosts surveys in job templates
-#      ansible.controller.job_template:
-#        name: "Network Automation - Restore"
-#        job_type: "run"
-#        inventory: "{{ restore_inventory | default('Network Inventory') }}"
-#        project: "{{ restore_project | default('Network Toolkit') }}"
-#        playbook: "{{ restores_playbook | default('playbooks/network_restore.yml') }}"
-#        credential: "{{ restore_credential | default('Network Credential') }}"
-#        survey_enabled: true
-#        survey_spec: "{{ lookup('template', '{{ playbook_dir }}/templates/backup.j2') }}"
-#        validate_certs: false
-#        execution_environment: "Default execution environment"
-#      loop
