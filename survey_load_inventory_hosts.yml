@@ -48,10 +48,6 @@
 ######  "changed": false
 ######}
 
-
-#  - name: use inventories variable to inject values into jinja2 template that defines how the survey_spec should be defined
-
-#     example https://github.com/network-automation/toolkit/blob/master/playbooks/network_backup.yml
     - name: build hosts surveys in job templates
       ansible.controller.job_template:
         name: "{{ item.job_template_name }}"
@@ -59,12 +55,4 @@
         survey_enabled: true
         survey_spec: "{{ lookup('template', '{{ playbook_dir }}/templates/host_field_survey_specs.j2') }}"
       loop: "{{ inventories }}"
-      loop_control:
-        index_var: i
 
-    - name: build hosts surveys in job templates
-      debug:
-        var: item['hosts']
-      loop: "{{ inventories }}"
-      loop_control:
-        index_var: i
