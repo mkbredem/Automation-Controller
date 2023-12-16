@@ -61,3 +61,10 @@
       loop: "{{ inventories }}"
       loop_control:
         index_var: i
+
+    - name: build hosts surveys in job templates
+      debug:
+        var: item[i][hosts]
+      loop: "{{ inventories }}"
+      loop_control:
+        index_var: i
