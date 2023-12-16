@@ -68,3 +68,5 @@
         vars:
           ansible_loop_index: "{{ loop_index }}"
       loop: "{{ inventories }}"
+      loop_control:
+        index_var: i
