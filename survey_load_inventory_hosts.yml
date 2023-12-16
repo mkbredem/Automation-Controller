@@ -52,8 +52,8 @@
 #  - name: use inventories variable to inject values into jinja2 template that defines how the survey_spec should be defined
 
     - name: build hosts surveys in job templates
-      set_fact:
-        loop_index: "{{ ansible_loop.index }}"
+      debug:
+        var: "{{ ansible_loop }}"
       loop: "{{ inventories }}"
       loop_control:
         loop_var: ansible_loop
