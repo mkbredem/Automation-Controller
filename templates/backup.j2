@@ -1,14 +1,14 @@
 {
-  "name": "",
-  "description": "",
+  "name": "Host List",
+  "description": "Choose which hosts you would like to target",
   "spec": [
     {
-      "type": "multiselect",
+      "type": "multiplechoice",
       "question_name": "Target Hosts",
       "question_description": "Select all the hosts that you would like the job applied to?",
       "variable": "target_hosts",
-      "choices": [ "all",
-{% for host in inventories[i][4] %}
+      "choices": [
+{% for host in inventory_list %}
 {% if loop.last %}
         "{{file.path.split('/')[-1]}}"
 {% else %}
@@ -16,8 +16,8 @@
 {% endif %}
 {% endfor %}
       ],
-      "required": false,
-      "default": "all"
+      "required": true,
+      "default": "{{backups.files[0].path.split('/')[-1]}}"
     }
   ]
 }
