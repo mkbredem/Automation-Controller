@@ -8,7 +8,7 @@
       "question_description": "Select all the hosts that you would like the job applied to?",
       "variable": "target_hosts",
       "choices": [ "all",
-{% for host in inventories[i][4] %}
+{% for host in inventories[i][hosts] %}
 {% if loop.last %}
         "{{ host }}"
 {% else %}
