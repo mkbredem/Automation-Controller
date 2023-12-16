@@ -64,4 +64,5 @@
         survey_spec: "{{ lookup('template', '{{ playbook_dir }}/templates/host_field_survey_specs.j2') }}"
 #        validate_certs: false
 #        execution_environment: "Default execution environment"
-      run_once: true
+#      run_once: true
+      loop: "{{ inventories }}"
