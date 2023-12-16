@@ -19,7 +19,7 @@
               'hosts': query('ansible.controller.controller_api', 'hosts') | json_query('[?summary_fields.inventory.id == `' + item.summary_fields.inventory.id | string + '`].name') | default([])
             }]
           }}
-      loop: "{{ query('ansible.controller.controller_api', 'job_templates', query_params={ 'name__iregex': '.' + jt_string + '.*' }) }}"
+      loop: "{{ query('ansible.controller.controller_api', 'job_templates', query_params={ 'name__iregex': '.*' + jt_string + '.*' }) }}"
 
     - name: show inventories
       debug:
