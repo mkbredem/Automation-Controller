@@ -22,11 +22,11 @@
               'id': item['id'],
               'inventory_name': item['summary_fields']['inventory']['name'],
               'inventory_id': item['summary_fields']['inventory']['id'],
-              'existing_survey': item['summary_fields'][]
               'hosts': query('ansible.controller.controller_api', 'hosts') | json_query('[?summary_fields.inventory.id == `' + item.summary_fields.inventory.id | string + '`].name') | default([])
             }]
           }}
       loop: "{{ query('ansible.controller.controller_api', 'job_templates', query_params={ 'name__iregex': '.*' + jt_string + '.*' }) }}"
+#               'existing_survey': item['summary_fields'][]
 
     - name: show inventories
       debug:
