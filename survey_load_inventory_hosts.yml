@@ -46,7 +46,7 @@
 
     - name: Show survey_specs
       debug: 
-        vars: survey_specs
+        var: survey_specs
 
 ######Sample Output
 ######
