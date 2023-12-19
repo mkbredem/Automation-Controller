@@ -2,22 +2,32 @@
   "name": "",
   "description": "",
   "spec": [
-    {
-      "type": "multiselect",
-      "question_name": "Target Hosts",
-      "question_description": "Select all the hosts that you would like the job applied to?",
-      "variable": "target_hosts",
-      "choices": [ "all",
-{% for host in item['hosts'] %}
-{% if loop.last %}
-        "{{ host }}"
-{% else %}
-        "{{ host }}",
-{% endif %}
-{% endfor %}
-      ],
-      "required": false,
-      "default": "all"
-    }
+    {% for job_template in survey_specs['results'] %}
+      {% if job_template['item']['id'] == item['id] %}
+        {% for a_spec in job_template['item']['json']['spec'] %}
+          {% if a_spec['variable'] == "target_hosts" %}
+            {
+              "type": "multiselect",
+              "question_name": "Target Hosts",
+              "question_description": "Select all the hosts that you would like the job applied to?",
+              "variable": "target_hosts",
+              "choices": [ "all",
+                    {% for host in item['hosts'] %}
+                        {% if loop.last %}
+                            "{{ host }}"
+                        {% else %}
+                            "{{ host }}",
+                        {% endif %}
+                    {% endfor %}
+              ],
+              "required": false,
+              "default": "all"
+            }
+          {% else %}
+            {{ a_spec }}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
   ]
 }
