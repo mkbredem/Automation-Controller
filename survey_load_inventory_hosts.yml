@@ -41,6 +41,7 @@
         method: GET
         return_content: yes
         force_basic_auth: yes
+      loop: "{{ inventories }}"
       register: survey_specs
 
     - name: Show survey_specs
