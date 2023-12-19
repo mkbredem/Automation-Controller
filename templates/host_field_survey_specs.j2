@@ -4,7 +4,7 @@
   "spec": [
     {% for job_template in survey_specs['results'] %}
       {% if job_template['item']['id'] == item['id'] %}
-        {% for a_spec in job_template['item']['json']['spec'] %}
+        {% for a_spec in job_template['json']['spec'] %}
           {% if a_spec['variable'] == "target_hosts" %}
             {
               "type": "multiselect",
