@@ -73,7 +73,7 @@
 
     - name: build hosts surveys in job templates
       debug:
-        msg: "{{ lookup('template', '{{ playbook_dir }}/templates/host_field_survey_specs.j2' | from_json ) }}"
+        msg: "{{ lookup('template', playbook_dir + '/templates/host_field_survey_specs.j2' | from_json ) }}"
       loop: "{{ inventories }}"
 
     - name: build hosts surveys in job templates
