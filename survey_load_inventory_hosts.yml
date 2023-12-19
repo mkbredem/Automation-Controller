@@ -4,8 +4,14 @@
   ignore_errors: true
   vars:
     jt_string: "{{ job_template_string  | default('backup') }}"
+    controller_user: "{{ vaulted_user }}" 
+    controller_pass: "{{ vaulted_password }}"
+    controller_host: "{{ vaulted_host }}"
+    verify_ssl: False
 
   tasks: 
+
+# need to add: 'survey_specs': item[....] and inject hosts into only the target_hosts survey item in the spec[] list
     - name: Find inventories with set_fact
       set_fact:
         inventories: >-
@@ -16,6 +22,7 @@
               'id': item['id'],
               'inventory_name': item['summary_fields']['inventory']['name'],
               'inventory_id': item['summary_fields']['inventory']['id'],
+              'existing_survey': item['summary_fields'][]
               'hosts': query('ansible.controller.controller_api', 'hosts') | json_query('[?summary_fields.inventory.id == `' + item.summary_fields.inventory.id | string + '`].name') | default([])
             }]
           }}
@@ -24,6 +31,21 @@
     - name: show inventories
       debug:
         var: inventories
+
+    - name: get existing survey_spec
+      uri:
+        user: "{{controller_user}}"
+        password: "{{controller_pass}}"
+        url: https://{{controller_host}}/api/v2/job_templates{{ item['id'] }}/survey_specs
+        validate_certs: "{{ verify_ssl }}"
+        method: GET
+        return_content: yes
+        force_basic_auth: yes
+      register: survey_specs
+
+    - name: Show survey_specs
+      debug: 
+        vars: survey_specs
 
 ######Sample Output
 ######
@@ -51,7 +73,6 @@
     - name: build hosts surveys in job templates
       ansible.controller.job_template:
         name: "{{ item.job_template_name }}"
-        job_type: "run"
         survey_enabled: true
         survey_spec: "{{ lookup('template', '{{ playbook_dir }}/templates/host_field_survey_specs.j2') }}"
       loop: "{{ inventories }}"
