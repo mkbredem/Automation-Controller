@@ -36,7 +36,7 @@
       uri:
         user: "{{controller_user}}"
         password: "{{controller_pass}}"
-        url: https://{{controller_host}}/api/v2/job_templates{{ item['id'] }}/survey_specs
+        url: https://{{controller_host}}/api/v2/job_templates/{{ item['id'] }}/survey_specs
         validate_certs: "{{ verify_ssl }}"
         method: GET
         return_content: yes
