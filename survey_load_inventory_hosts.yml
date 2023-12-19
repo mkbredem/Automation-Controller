@@ -75,6 +75,6 @@
       ansible.controller.job_template:
         name: "{{ item.job_template_name }}"
         survey_enabled: true
-        survey_spec: "{{ lookup('template', '{{ playbook_dir }}/templates/host_field_survey_specs.j2') }}"
+        survey_spec: "{{ lookup('template', '{{ playbook_dir }}/templates/host_field_survey_specs.j2' | from_json ) }}"
       loop: "{{ inventories }}"
 
