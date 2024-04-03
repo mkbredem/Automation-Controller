@@ -70,13 +70,13 @@
 
     - name: Show survey_specs
       debug: 
-        var: survey_specs
+        var: survey_specs['json'] | dict2items
 
 # Still need to alter the rest of the playbook to not overwrite the existing spec.  
 # survey_specs needs to be updated so that only the field with target_hosts as a variable is updated
 # The following code simply overwrites the existing survey with only the target_hosts variable
 
-    - name: build hosts surveys in job templates
+    - name: test lookup plugin that will update survey_specs
       debug:
         msg: "{{ lookup('template', playbook_dir + '/templates/host_field_survey_specs.j2' ) }}"
       loop: "{{ inventories }}"
