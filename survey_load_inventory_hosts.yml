@@ -32,22 +32,6 @@
       debug:
         var: inventories
 
-    - name: get existing survey_spec
-      uri:
-        user: "{{controller_user}}"
-        password: "{{controller_pass}}"
-        url: https://{{controller_host}}/api/v2/job_templates/{{ item['id'] }}/survey_spec
-        validate_certs: "{{ verify_ssl }}"
-        method: GET
-        return_content: yes
-        force_basic_auth: yes
-      loop: "{{ inventories }}"
-      register: survey_specs
-
-    - name: Show survey_specs
-      debug: 
-        var: survey_specs
-
 ######Sample Output
 ######
 ######{
@@ -71,7 +55,29 @@
 ######  "changed": false
 ######}
 
-    - name: build hosts surveys in job templates
+# Need to preserve existing survey fields, so take a snapshot of existing survey_spec
+    - name: get existing survey_spec
+      uri:
+        user: "{{controller_user}}"
+        password: "{{controller_pass}}"
+        url: https://{{controller_host}}/api/v2/job_templates/{{ item['id'] }}/survey_spec
+        validate_certs: "{{ verify_ssl }}"
+        method: GET
+        return_content: yes
+        force_basic_auth: yes
+      loop: "{{ inventories }}"
+      register: survey_specs
+
+    - name: Show survey_specs
+      debug: 
+        var: item.json
+      loop: survey_specs
+
+# Still need to alter the rest of the playbook to not overwrite the existing spec.  
+# survey_specs needs to be updated so that only the field with target_hosts as a variable is updated
+# The following code simply overwrites the existing survey with only the target_hosts variable
+
+    - name: test lookup plugin that will update survey_specs
       debug:
         msg: "{{ lookup('template', playbook_dir + '/templates/host_field_survey_specs.j2' ) }}"
       loop: "{{ inventories }}"
@@ -80,6 +86,5 @@
       ansible.controller.job_template:
         name: "{{ item.job_template_name }}"
         survey_enabled: true
-        survey_spec: "{{ lookup('template', '{{ playbook_dir }}/templates/host_field_survey_specs.j2' | from_json ) }}"
+        survey_spec: "{{ lookup('template', '{{ playbook_dir }}/templates/host_field_survey_specs.j2' ) }}"
       loop: "{{ inventories }}"
-
