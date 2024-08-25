@@ -71,7 +71,7 @@
     - name: Show survey_specs
       debug: 
         var: item.json
-      loop: survey_specs
+      loop: survey_specs.results
 
 # Still need to alter the rest of the playbook to not overwrite the existing spec.  
 # survey_specs needs to be updated so that only the field with target_hosts as a variable is updated
