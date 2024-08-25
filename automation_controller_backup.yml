@@ -2,7 +2,8 @@
 - name: backup controller to dropbox
   hosts: aap_demo_controller
   vars:
-    install_dir: /root/ansible-automation-platform-setup-2.4-3
+    install_dir: /root/ansible-automation-platform-setup-{{ aap_version }}
+    aap_version: '2.4-7'
 
   tasks:
     - name: Take a backup of Automation Controller postgressql db
@@ -35,6 +36,21 @@
         --header "Dropbox-API-Arg: {\"path\": \"/Apps/Automation_Controller/ac_backup{{ ansible_date_time.date }}.tar.gz\",\"mode\": \"overwrite\",\"autorename\": true,\"mute\": false}" 
         --header "Content-Type: application/octet-stream" 
         --data-binary @automation-platform-backup-latest.tar.gz
+      args:
+        chdir: "{{ install_dir }}"
+
+    - name: Document output for logging purposes
+      ansible.builtin.shell: ls -l
+      args:
+        chdir: "/root/"
+
+    - name: backup backup to dropbox
+      ansible.builtin.shell: >
+        curl -X POST https://content.dropboxapi.com/2/files/upload 
+        --header "Authorization: Bearer {{ access_token }}"
+        --header "Dropbox-API-Arg: {\"path\": \"/Apps/Automation_Controller/ansible-automation-platform-setup-{{ aap_version }}.tar.gz\",\"mode\": \"overwrite\",\"autorename\": true,\"mute\": false}" 
+        --header "Content-Type: application/octet-stream" 
+        --data-binary @ansible-automation-platform-setup-{{ aap_version }}.tar.gz
       args:
         chdir: "{{ install_dir }}"
 
